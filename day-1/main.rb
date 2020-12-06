@@ -16,7 +16,7 @@ module SumOfEntries
   def call(num_entries)
     @num_entries = num_entries
 
-    data = File.read('./day-1-inputs.txt').split("\n").map(&:to_i).to_set
+    data = File.read('./input.txt').split("\n").map(&:to_i).to_set
 
     send(METHOD_CHOICE[num_entries], data)
   end
