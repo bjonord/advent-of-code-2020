@@ -1,17 +1,6 @@
 #!/usr/bin/env ruby
 
-module ResultOutput
-  module_function
-
-  def call(info:, data:, method:, expected:)
-    if data.send(method, expected)
-      puts "#{info} - \u2705: #{data}"
-    else
-      puts "#{info} - \u274C: #{data}"
-      exit 1
-    end
-  end
-end
+require_relative '../lib/result_output'
 
 INPUT_DATA = File.read('./input.txt')
 
@@ -30,15 +19,13 @@ part2 = ->(data) { data.then(&prepare).map(&answers_to_char).map(&intersect).the
 
 ResultOutput.(
   info: 'Input data - union',
-  data: INPUT_DATA.yield_self(&part1),
-  method: :==,
+  result: INPUT_DATA.yield_self(&part1),
   expected: 7027
 )
 
 ResultOutput.(
   info: 'Input data - intersect',
-  data: INPUT_DATA.yield_self(&part2),
-  method: :==,
+  result: INPUT_DATA.yield_self(&part2),
   expected: 3579
 )
 
@@ -53,14 +40,12 @@ part2_v2 = ->(data) { data.then(&prepare).map(&intersecter).sum }
 
 ResultOutput.(
   info: 'V2 - Input data - union',
-  data: INPUT_DATA.yield_self(&part1_v2),
-  method: :==,
+  result: INPUT_DATA.yield_self(&part1_v2),
   expected: 7027
 )
 
 ResultOutput.(
   info: 'V2 - Input data - intersect',
-  data: INPUT_DATA.yield_self(&part2_v2),
-  method: :==,
+  result: INPUT_DATA.yield_self(&part2_v2),
   expected: 3579
 )

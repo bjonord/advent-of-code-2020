@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require_relative '../lib/result_output'
+
 class Passport
   attr_reader :data
 
@@ -145,58 +147,32 @@ iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719
 FOO
 
 
-first_result = GlidingThroughThePassport.new(DEMO_DATA).verify(present: true)
+ResultOutput.(
+  info: 'Test 1 - part 1',
+  result: GlidingThroughThePassport.new(DEMO_DATA).verify(present: true),
+  expected: 2
+)
 
-if first_result == 2
-  puts "whoop!!"
-  puts first_result
-end
-puts "--------------"
+ResultOutput.(
+  info: 'Input data - part 1',
+  result: GlidingThroughThePassport.new(File.read('./input.txt')).verify(present: true),
+  expected: 204
+)
 
-second_result = GlidingThroughThePassport.new(File.read('./input.txt')).verify(present: true)
+ResultOutput.(
+  info: 'Test 1 - part 2',
+  result: GlidingThroughThePassport.new(INVALID).verify,
+  expected: 0
+)
 
-if second_result == 204
-  puts "whoop!!"
-  puts second_result
-else
-  puts "booo!!"
-  puts second_result
-  exit 1
-end
-puts "--------------"
+ResultOutput.(
+  info: 'Test 2 - part 2',
+  result: GlidingThroughThePassport.new(VALID).verify,
+  expected: 4
+)
 
-third_result = GlidingThroughThePassport.new(INVALID).verify
-
-if third_result == 0
-  puts "whoop!!"
-  puts third_result
-else
-  puts "booo!!"
-  puts third_result
-  exit 1
-end
-puts "--------------"
-
-fourth_result = GlidingThroughThePassport.new(VALID).verify
-
-if fourth_result == 4
-  puts "whoop!!"
-  puts fourth_result
-else
-  puts "booo!!"
-  puts fourth_result
-  exit 1
-end
-puts "--------------"
-
-fifth_result = GlidingThroughThePassport.new(File.read('./input.txt')).verify
-
-if fifth_result == 179
-  puts "whoop!!"
-  puts fifth_result
-else
-  puts "booo!!"
-  puts fifth_result
-  exit 1
-end
-puts "--------------"
+ResultOutput.(
+  info: 'Input data - part 2',
+  result: GlidingThroughThePassport.new(File.read('./input.txt')).verify,
+  expected: 179
+)

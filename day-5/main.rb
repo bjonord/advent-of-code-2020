@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require_relative '../lib/result_output'
+
 class PositionFinder
   attr_reader :range, :left, :right
   attr_accessor :current
@@ -63,16 +65,11 @@ module CalculateSeatId
 end
 
 # Test
-puts 'Test 1'
-seat_id = CalculateSeatId.call('FBFBBFFRLR')
-if seat_id == 357
-  puts 'nice'
-else
-  puts 'uh oh'
-  exit 1
-end
-
-puts 'Test 2'
+ResultOutput.(
+  info: 'Test 1',
+  result: CalculateSeatId.call('FBFBBFFRLR'),
+  expected: 357
+)
 
 TEST2 = [
   {seq: 'BFFFBBFRRR', seat_id: 567 },
@@ -80,39 +77,28 @@ TEST2 = [
   {seq: 'BBFFBBFRLL', seat_id: 820 },
 ].freeze
 
-test2 = TEST2.all? { |data|
-  CalculateSeatId.call(data.fetch(:seq)) == data.fetch(:seat_id)
-}
-
-if test2
-  puts 'nice'
-else
-  puts 'uh oh'
-  exit 1
-end
+ResultOutput.(
+  info: 'Test 2',
+  result: TEST2.all? { |data| CalculateSeatId.call(data.fetch(:seq)) == data.fetch(:seat_id) },
+  expected: true
+)
 
 # Input data
 
-puts 'Input data'
+input_data = File.readlines('./input.txt')
 
-input = File.readlines('./input.txt')
+ResultOutput.(
+  info: 'Input data - max - part 1',
+  result: input_data.map { |input| CalculateSeatId.call(input) }.max,
+  expected: 888
+)
 
-result = input.map do |input|
+result = input_data.map do |input|
   CalculateSeatId.call(input)
 end
 
-if result.max == 888
-  puts 'nice'
-else
-  puts 'uh oh'
-  exit 1
-end
-
-my_seat = (result.min..result.max).to_a - result
-
-if my_seat.first == 522
-  puts 'found my seat!'
-else
-  puts 'uh oh'
-  exit 1
-end
+ResultOutput.(
+  info: 'Input data - my seat - part 2',
+  result: ((result.min..result.max).to_a - result).first,
+  expected: 522
+)

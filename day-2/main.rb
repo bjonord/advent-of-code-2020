@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'ostruct'
+require_relative '../lib/result_output'
 
 class PasswSet
   attr_reader :password
@@ -38,10 +39,17 @@ module ValidPasswords
   module_function
 
   def call
-    puts 'FIRST POLICY:'
-    puts prepared_data.select(&:valid_first_policy?).length
-    puts 'SECOND POLICY:'
-    puts prepared_data.select(&:valid_second_policy?).length
+    ResultOutput.(
+      info: 'Input data - part 1',
+      result: prepared_data.select(&:valid_first_policy?).length,
+      expected: 643
+    )
+
+    ResultOutput.(
+      info: 'Input data - part 2',
+      result: prepared_data.select(&:valid_second_policy?).length,
+      expected: 388
+    )
   end
 
   def prepared_data

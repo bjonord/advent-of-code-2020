@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'set'
+require_relative '../lib/result_output'
 
 module SumOfEntries
   module_function
@@ -13,28 +14,25 @@ module SumOfEntries
   }
 
   def call(num_entries)
-
     @num_entries = num_entries
 
-    data = File.read("./day-1-inputs.txt").split("\n").map(&:to_i).to_set
+    data = File.read('./day-1-inputs.txt').split("\n").map(&:to_i).to_set
 
-    self.send(METHOD_CHOICE[num_entries], data)
+    send(METHOD_CHOICE[num_entries], data)
   end
 
   def two_entries(data)
-    large_and_small = data.group_by { |line|  line.to_i > SUM/@num_entries }
-
+    large_and_small = data.group_by { |line| line.to_i > SUM / @num_entries }
     large_and_small[true].each do |large|
       small = large_and_small[false].detect { |small| small + large == 2020 }
 
       if small
-        puts "--------------"
-        puts "FOUND"
-        puts "--------------"
-        puts "entries: ", large, small
-        puts "product: #{large * small}"
-        puts "--------------"
-        exit
+        ResultOutput.(
+          info: 'Input data - part 1',
+          result: large * small,
+          expected: 712_075
+        )
+        break
       end
     end
   end
@@ -47,12 +45,11 @@ module SumOfEntries
         end
 
         if third
-          puts "--------------"
-          puts "FOUND"
-          puts "--------------"
-          puts "entries: ", first, second, third
-          puts "product: #{first * second * third}"
-          puts "--------------"
+          ResultOutput.(
+            info: 'Input data - part 2',
+            result: first * second * third,
+            expected: 145_245_270
+          )
           exit
         end
       end
@@ -61,5 +58,5 @@ module SumOfEntries
 end
 
 
-num_entries = ARGV.first.to_i
-SumOfEntries.call(num_entries || 2)
+SumOfEntries.call(2)
+SumOfEntries.call(3)

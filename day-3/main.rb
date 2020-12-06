@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require_relative '../lib/result_output'
+
 class PathTravel
   attr_reader :right, :down
   def initialize(right:, down:)
@@ -65,16 +67,12 @@ module GlidingThroughTheSnow
   def first_attempt
     slope = slopes[1]
     position = Position.new(slope, data_map.length)
-    trees = data_map.map { |path_row| path_row.tree?(position.move) }.compact.length
 
-    if trees != 209
-      puts "not correct"
-      puts trees
-      exit 1
-    else
-      puts "all good"
-      puts trees
-    end
+    ResultOutput.(
+      info: 'Input data - part 1',
+      result: data_map.map { |path_row| path_row.tree?(position.move) }.compact.length,
+      expected: 209
+    )
   end
 
   def second_attempt
@@ -90,14 +88,11 @@ module GlidingThroughTheSnow
       foundTrees.compact.length
     end.reduce(:*)
 
-    if trees != 1574890240
-      puts "not correct"
-      puts trees
-      exit 1
-    else
-      puts "all good"
-      puts trees
-    end
+    ResultOutput.(
+      info: 'Input data - part 2',
+      result: trees,
+      expected: 1574890240
+    )
   end
 
   def data_map
@@ -109,14 +104,5 @@ module GlidingThroughTheSnow
   end
 end
 
-puts "--------------"
-puts "First attempt:"
-puts "--------------"
 GlidingThroughTheSnow.first_attempt
-puts "--------------"
-
-puts "--------------"
-puts "Second attempt:"
-puts "--------------"
 GlidingThroughTheSnow.second_attempt
-puts "--------------"
