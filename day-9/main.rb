@@ -72,24 +72,20 @@ end
 
 ResultOutput.(
   info: 'Demo data',
-  result: CrackTheCode.new(5, DEMO).get_cracking,
   expected: 127
-)
+) { CrackTheCode.new(5, DEMO).get_cracking }
 
 ResultOutput.(
   info: 'Input data - part 1',
-  result: CrackTheCode.new(25, INPUT_DATA).get_cracking,
   expected: 22477624
-)
+) { CrackTheCode.new(25, INPUT_DATA).get_cracking }
 
 ResultOutput.(
   info: 'Demo data',
-  result: CrackTheCode.new(5, DEMO).get_cracking(yield_self: true).then { |res| res.find_weakness },
   expected: 62
-)
+) { CrackTheCode.new(5, DEMO).get_cracking(yield_self: true).then { |res| res.find_weakness } }
 
 ResultOutput.(
   info: 'Input data - part 2',
-  result: CrackTheCode.new(25, INPUT_DATA).get_cracking(yield_self: true).then { |res| res.find_weakness },
   expected: 2980044
-)
+) { CrackTheCode.new(25, INPUT_DATA).get_cracking(yield_self: true).then { |res| res.find_weakness } }
