@@ -1,2 +1,4 @@
 input.txt
 *-inputs.txt
+*.input
+*.sample
